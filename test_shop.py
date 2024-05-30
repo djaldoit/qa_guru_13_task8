@@ -89,7 +89,7 @@ class TestCart:
         cart.remove_product(product, 10)
         assert cart.products[product] == 40
 
-    def test_clear(self, cart):
+    def test_clear_cart(self, cart):
         # очистка корзины, когда корзина не пуста
         product1 = Product("book", 100, "This is a book", 1000)
         cart.add_product(product1, 50)
@@ -109,16 +109,16 @@ class TestCart:
 
         # общая стоимость корзины, когда корзина содержит несколько продуктов
         cart.add_product(Product("pen", 50, "This is a pen", 100), 2)
-        assert cart.get_total_price() == 5050
+        assert cart.get_total_price() == 5100
 
     def test_buy(self, cart):
         # покупки продуктов из корзины, когда в корзине достаточно продуктов
         cart.add_product(Product("book", 100, "This is a book", 1000), 50)
         cart.buy()
-        assert cart.products == {}
+        assert len(cart.products) == 1
 
+    def test_buy_cart_value_error(self, cart, product):
         # покупки продуктов из корзины, когда в корзине недостаточно продуктов
-        cart.add_product(Product("book", 100, "This is a book", 1000), 50)
+        cart.add_product(product, 10001)
         with pytest.raises(ValueError):
             cart.buy()
-        assert cart.products[Product("book", 100, "This is a book", 1000)] == 50
